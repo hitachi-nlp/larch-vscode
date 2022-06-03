@@ -1,71 +1,115 @@
-# readmegenerator README
+# VSCode Extension for LARCH
 
-This is the README for your extension "readmegenerator". After writing up a brief description, we recommend including the following sections.
+This is a VS Code extension for generating README. It calls the REST API of [LARCH](https://github.com/hitachi-nlp/larch) to generate the README file.
 
-## Features
+## Usage
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### Installation
 
-For example if there is an image subfolder under your extension project workspace:
+1. Download the package (VSIX file) from the following URL:
+   - https://github.com/hitachi-nlp/larch-vscode/releases
 
-\!\[feature X\]\(images/feature-x.png\)
+2. Install the downloaded package using one of the following methods:
+   - Select "Install from VSIX..." from the dropdown menu in the Extensions view.
+   - Execute the "Extensions: Install from VSIX..." command from the Command Palette.
+   - Run the following command in the command line: `code --install-extension <vsix file>`.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Configuration
 
-## Requirements
+1. Open the "Settings" page.
+2. Select "Extensions > LARCH".
+3. Specify the URL of the LARCH server's REST API in the "Rest API" field.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### Execution
 
-## Extension Settings
+1. Open the project for which you want to generate the README file in VS Code.
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+2. Execute the "LARCH" command from the Command Palette.
+   1. You will be prompted for the project name (the default value is the repository name or the project's root directory name).
+   2. The list of available models will be displayed. Select the desired model.
+   3. After a while, the generated README file will be displayed in the editor.
 
-For example:
+### Known Issues
 
-This extension contributes the following settings:
+1. While the generated README file is being displayed in the editor, interrupting the process by switching to other files may cause issues.
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+## Development
 
-## Known Issues
+### Development Environment
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- VS Code (tested with v1.73.1)
+- Node.js (tested with v16.15.0)
+- Python (optional, used only to run a dummy web server)
 
-## Release Notes
+### Development Process
 
-Users appreciate release notes as you update your extension.
+1. Clone the project.
+   ```
+   $ git clone https://github.com/hitachi-nlp/larch-vscode.git larch
+   $ cd larch
+   ```
 
-### 1.0.0
+2. Install the dependencies.
+   ```
+   $ npm install
+   ```
 
-Initial release of ...
+3. If you want to use the dummy web server, start it.
+   The dummy REST API can be accessed at `http://localhost:8000/`.
+   ```
+   $ pip install flask
+   $ python util/dummy_server.py
+   ```
 
-### 1.0.1
+4. Open the project in VS Code.
 
-Fixed issue #.
+5. Edit the source code and configuration files.
 
-### 1.1.0
+6. Run the extension.
+   1. Select "[Run] > [Start Debugging]".
+   2. In the newly opened window, execute the "LARCH" command from the Command Palette.
 
-Added features X, Y, and Z.
+### Package (VSIX File) Creation Process
 
----
+1. Install the package creation tool.
+   ```
+   $ npm install --location=global @vscode/vsce
+   ```
 
-## Following extension guidelines
+2. Generate the package.
+   This will create a file named "larch-0.0.4.vsix" in the current directory.
+   ```
+   $ vsce package
+   ```
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+## Memo
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+This project was initially created following the steps in the official website's [Get Started](https://code.visualstudio.com/api/get-started/your-first-extension) guide.
 
-## Working with Markdown
+1. Install Yeoman and the Yeoman generator for VS Code extensions.
+   ```
+   $ npm install --location=global yo generator-code
+   ```
 
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
+2. Generate the project scaffold.
+   Select the default values except for the project name.
+   ```
+   $ yo code
+   ```
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
+3. Install the following libraries to the generated scaffold.
+   ```
+   $ npm i node-fetch@2
+   $ npm i npm-packlist
+   $ npm i isbinaryfile
+   $ npm i -D @types/node-fetch@2
+   $ npm i -D @types/npm-packlist
+   ```
 
-## For more information
+## License
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+This plugin is distributed under MIT.
+See [LICENSE](./LICENSE) for the full terms.
 
-**Enjoy!**
+This plugin was derived from Yeoman generated code.
+Please refer to [Git hash f894112](https://github.com/hitachi-nlp/larch-vscode/commit/f894112) for the original template.

@@ -1,26 +1,66 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+/*---------------------------------------------------------------------------------------------
+ * Copyright (c) Hitachi, Ltd. All rights reserved.
+ * Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+import * as vscode from "vscode";
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "readmegenerator" is now active!');
+import { readmeGeneratorCmd } from "./command";
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('readmegenerator.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from readmegenerator!');
-	});
-
-	context.subscriptions.push(disposable);
+async function chooseWorkspaceFolder(
+    wsfs: readonly vscode.WorkspaceFolder[] | undefined
+) {
+    if (!wsfs || wsfs.length === 0) {
+        // no workspaces
+        return undefined;
+    } else if (wsfs.length === 1) {
+        // a single workspace
+        return wsfs[0];
+    } else {
+        // multi-root workspaces
+        return await vscode.window.showWorkspaceFolderPick();
+    }
 }
 
-// This method is called when your extension is deactivated
+async function dumpError(wsf: vscode.WorkspaceFolder, error: Error) {
+    const dumpUri = vscode.Uri.joinPath(wsf.uri, "error_dump.log");
+    const wsEdit = new vscode.WorkspaceEdit();
+    wsEdit.deleteFile(dumpUri, { ignoreIfNotExists: true });
+    wsEdit.createFile(dumpUri);
+    wsEdit.insert(dumpUri, new vscode.Position(0, 0), error.stack || "");
+    await vscode.workspace.applyEdit(wsEdit);
+
+    const dumpTextDoc = await vscode.workspace.openTextDocument(dumpUri);
+    await dumpTextDoc.save();
+}
+
+// this method is called when the extension is activated
+export function activate(context: vscode.ExtensionContext) {
+    console.log('Congratulations, your extension "larch" is now active!');
+
+    let disposable = vscode.commands.registerCommand("larch.cmd", async () => {
+        const wsfs = vscode.workspace.workspaceFolders;
+        const wsf = await chooseWorkspaceFolder(wsfs);
+
+        try {
+            if (!wsf) {
+                throw new Error("No workspaces");
+            }
+
+            await readmeGeneratorCmd(wsf);
+            vscode.window.showInformationMessage("LARCH: done");
+        } catch (error) {
+            // FIXME: improve error handling
+            const msg = String(error);
+            vscode.window.showErrorMessage(`LARCH: ${msg}`);
+            if (wsf && error instanceof Error) {
+                await dumpError(wsf, error);
+            }
+        }
+    });
+
+    context.subscriptions.push(disposable);
+}
+
+// this method is called when the extension is deactivated
 export function deactivate() {}

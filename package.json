@@ -1,45 +1,82 @@
 {
-  "name": "readmegenerator",
-  "displayName": "readmegenerator",
-  "description": "",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.76.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:readmegenerator.helloWorld"
-  ],
-  "main": "./out/extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "readmegenerator.helloWorld",
-        "title": "Hello World"
-      }
-    ]
-  },
-  "scripts": {
-    "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "npm run compile && npm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.76.0",
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.0",
-    "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.38.1",
-    "@typescript-eslint/parser": "^5.38.1",
-    "eslint": "^8.24.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.0.0",
-    "typescript": "^4.8.4",
-    "@vscode/test-electron": "^2.1.5"
-  }
+	"name": "larch",
+	"displayName": "LARCH",
+	"description": "LARCH: Large Language Model-based Automatic Readme Creation with Heuristics",
+	"version": "0.0.4",
+	"engines": {
+		"vscode": "^1.67.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"publisher": "Hitachi, Ltd.",
+	"icon": "images/icon.png",
+	"license": "SEE LICENSE IN LICENSE",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/hitachi-nlp/larch-vscode"
+	},
+	"activationEvents": [
+		"onCommand:larch.cmd"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "larch.cmd",
+				"title": "LARCH"
+			}
+		],
+		"configuration": {
+			"title": "LARCH",
+			"properties": {
+				"larch.restAPI": {
+					"type": "string",
+					"default": "http://localhost:8000/",
+					"description": "Base URL of a LARCH server",
+					"order": 1
+				},
+				"larch.fileSizeThreshold": {
+					"type": "number",
+					"default": 100000,
+					"description": "Specifies the threshold of file size in bytes",
+					"order": 2
+				},
+				"larch.animationWordsPerMinute": {
+					"type": "number",
+					"default": 1000,
+					"description": "Specifies animation speed by words per minute",
+					"order": 3
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "14.x",
+		"@types/node-fetch": "^2.6.2",
+		"@types/npm-packlist": "^3.0.0",
+		"@types/vscode": "^1.67.0",
+		"@typescript-eslint/eslint-plugin": "^5.21.0",
+		"@typescript-eslint/parser": "^5.21.0",
+		"@vscode/test-electron": "^2.1.3",
+		"eslint": "^8.14.0",
+		"glob": "^8.0.1",
+		"mocha": "^9.2.2",
+		"typescript": "^4.6.4"
+	},
+	"dependencies": {
+		"isbinaryfile": "^5.0.0",
+		"node-fetch": "^2.6.7",
+		"npm-packlist": "^5.1.0"
+	}
 }
