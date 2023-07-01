@@ -2,7 +2,7 @@
 	"name": "larch",
 	"displayName": "LARCH",
 	"description": "LARCH: Large Language Model-based Automatic Readme Creation with Heuristics",
-	"version": "0.0.4",
+	"version": "0.0.5",
 	"engines": {
 		"vscode": "^1.67.0"
 	},
