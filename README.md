@@ -112,4 +112,4 @@ This plugin is distributed under MIT.
 See [LICENSE](./LICENSE) for the full terms.
 
 This plugin was derived from Yeoman generated code.
-Please refer to [Git hash f894112](https://github.com/hitachi-nlp/larch-vscode/commit/f894112) for the original template.
+Please refer to [Git hash d69c08c](https://github.com/hitachi-nlp/larch-vscode/commit/d69c08c) for the original template.
